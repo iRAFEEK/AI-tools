@@ -268,13 +268,10 @@ export default function SmartMatchPage() {
                 ].map((option) => (
                   <button
                     key={option.value}
-                  <button
-                    key={option.value}
                     onClick={() => {
                       const updatedData = { ...formData, primaryGoal: option.value }
                       setFormData(updatedData)
                       handleSubmitWithData(updatedData)
-                    }}
                     }}
                     className={`w-full text-left p-4 rounded-lg border-2 transition-all hover:border-blue-500 hover:bg-blue-50 ${
                       formData.primaryGoal === option.value
@@ -370,25 +367,25 @@ export default function SmartMatchPage() {
                             >
                               View Details
                               <ArrowRight className="h-4 w-4" />
-
-                  {results.length === 0 && !isLoading && (
-                    <div className="text-center py-12">
-                      <p className="text-gray-600 mb-4">
-                        No tools matched your criteria.
-                      </p>
-                      <button
-                        onClick={() => setStep(1)}
-                        className="text-blue-600 hover:underline font-medium"
-                      >
-                        Try different answers
-                      </button>
-                    </div>
-                  )}
                             </a>
                           </div>
                         </div>
                       </div>
                     ))}
+
+                    {results.length === 0 && !isLoading && (
+                      <div className="text-center py-12">
+                        <p className="text-gray-600 mb-4">
+                          No tools matched your criteria.
+                        </p>
+                        <button
+                          onClick={() => setStep(1)}
+                          className="text-blue-600 hover:underline font-medium"
+                        >
+                          Try different answers
+                        </button>
+                      </div>
+                    )}
                   </div>
 
                   {/* Start Over Button */}
