@@ -3,12 +3,14 @@
 import Link from 'next/link'
 import { ToolWithRelations } from '@/types'
 import { Star, Heart, Eye } from 'lucide-react'
+import { useFavorites } from '@/hooks/useFavorites'
 
 interface ToolCardProps {
   tool: ToolWithRelations | any // Using any for now to handle different tool shapes
 }
 
 export function ToolCard({ tool }: ToolCardProps) {
+  const { isFavorited, isLoading, toggleFavorite } = useFavorites(false)
   // Format pricing type for display
   const formatPricing = (type: string) => {
     return type
@@ -48,16 +50,20 @@ export function ToolCard({ tool }: ToolCardProps) {
             </div>
           </div>
 
-          {/* Favorite Button (placeholder for now) */}
+          {/* Favorite Button */}
           <button
             onClick={(e) => {
               e.preventDefault()
-              // TODO: Add favorite functionality
-              console.log('Favorite clicked')
+              toggleFavorite(tool.id)
             }}
-            className="text-gray-400 hover:text-red-500 transition-colors"
+            disabled={isLoading}
+            className={`transition-colors ${
+              isFavorited
+                ? 'text-red-500 fill-red-500'
+                : 'text-gray-400 hover:text-red-500'
+            } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
           >
-            <Heart className="h-5 w-5" />
+            <Heart className={`h-5 w-5 ${isFavorited ? 'fill-current' : ''}`} />
           </button>
         </div>
 
