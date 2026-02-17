@@ -324,14 +324,16 @@ model ToolSubmission {
   userId              String
   name                String
   description         String           @db.Text
+  longDescription     String?          @db.Text
   websiteUrl          String
   logoUrl             String?
   pricingType         PricingType
   pricingDetails      String?          @db.Text
-  suggestedCategories String[]
-  suggestedTags       String[]
-  suggestedFeatures   String[]
+  hasFreeTier         Boolean          @default(false)
+  categoryIds         String[]
+  tagIds              String[]
   status              SubmissionStatus @default(PENDING)
+  rejectionReason     String?          @db.Text
   adminNotes          String?          @db.Text
   reviewedAt          DateTime?
   createdAt           DateTime         @default(now())

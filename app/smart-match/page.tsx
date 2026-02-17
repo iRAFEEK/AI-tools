@@ -25,23 +25,23 @@ export default function SmartMatchPage() {
     primaryGoal: '',
   })
 
-  const handleSubmit = async () => {
+  const handleSubmitWithData = async (data: typeof formData) => {
     setIsLoading(true)
 
     try {
       const response = await fetch('/api/matching', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(data),
       })
 
-      const data = await response.json()
+      const result = await response.json()
 
-      if (data.success) {
-        setResults(data.data.matches)
+      if (result.success) {
+        setResults(result.data.matches)
         setStep(6) // Results step
       } else {
-        alert(data.error || 'Failed to get matches')
+        alert(result.error || 'Failed to get matches')
       }
     } catch (error) {
       console.error('Error getting matches:', error)
@@ -50,6 +50,8 @@ export default function SmartMatchPage() {
       setIsLoading(false)
     }
   }
+
+  const handleSubmit = () => handleSubmitWithData(formData)
 
   const toggleTech = (tech: string) => {
     setFormData((prev) => ({
@@ -266,9 +268,13 @@ export default function SmartMatchPage() {
                 ].map((option) => (
                   <button
                     key={option.value}
+                  <button
+                    key={option.value}
                     onClick={() => {
-                      setFormData({ ...formData, primaryGoal: option.value })
-                      handleSubmit()
+                      const updatedData = { ...formData, primaryGoal: option.value }
+                      setFormData(updatedData)
+                      handleSubmitWithData(updatedData)
+                    }}
                     }}
                     className={`w-full text-left p-4 rounded-lg border-2 transition-all hover:border-blue-500 hover:bg-blue-50 ${
                       formData.primaryGoal === option.value
@@ -364,6 +370,20 @@ export default function SmartMatchPage() {
                             >
                               View Details
                               <ArrowRight className="h-4 w-4" />
+
+                  {results.length === 0 && !isLoading && (
+                    <div className="text-center py-12">
+                      <p className="text-gray-600 mb-4">
+                        No tools matched your criteria.
+                      </p>
+                      <button
+                        onClick={() => setStep(1)}
+                        className="text-blue-600 hover:underline font-medium"
+                      >
+                        Try different answers
+                      </button>
+                    </div>
+                  )}
                             </a>
                           </div>
                         </div>

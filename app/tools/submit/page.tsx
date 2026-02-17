@@ -2,13 +2,36 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 
 export default function SubmitToolPage() {
   const router = useRouter()
+  const { data: session, status } = useSession()
   const [categories, setCategories] = useState<any[]>([])
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
+
+  // Redirect if not logged in
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/api/auth/signin?callbackUrl=/tools/submit')
+    }
+  }, [status, router])
+
+  // Show loading while checking auth
+  if (status === 'loading') {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <p className="text-gray-600">Loading...</p>
+      </div>
+    )
+  }
+
+  // Show nothing if not authenticated (will redirect)
+  if (!session) {
+    return null
+  }
 
   const [formData, setFormData] = useState({
     name: '',

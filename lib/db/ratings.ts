@@ -6,7 +6,7 @@ import { prisma } from '@/lib/prisma'
 export async function upsertRating(
   userId: string,
   toolId: string,
-  value: number
+  score: number
 ) {
   // Upsert rating (create or update if exists)
   const rating = await prisma.rating.upsert({
@@ -17,22 +17,22 @@ export async function upsertRating(
       },
     },
     update: {
-      value,
+      score,
     },
     create: {
       userId,
       toolId,
-      value,
+      score,
     },
   })
 
   // Recalculate average rating for the tool
   const avgResult = await prisma.rating.aggregate({
     where: { toolId },
-    _avg: { value: true },
+    _avg: { score: true },
   })
 
-  const averageRating = avgResult._avg.value || 0
+  const averageRating = avgResult._avg.score || 0
 
   // Update tool with new average rating
   await prisma.tool.update({

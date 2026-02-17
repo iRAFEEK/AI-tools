@@ -1,6 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 import { Check, X } from 'lucide-react'
 
 interface Submission {
@@ -18,9 +20,39 @@ interface Submission {
 }
 
 export default function AdminSubmissionsPage() {
+  const router = useRouter()
+  const { data: session, status: authStatus } = useSession()
   const [submissions, setSubmissions] = useState<Submission[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [statusFilter, setStatusFilter] = useState<'PENDING' | 'APPROVED' | 'REJECTED' | 'ALL'>('PENDING')
+
+  // Redirect if not logged in or not admin
+  useEffect(() => {
+    if (authStatus === 'unauthenticated') {
+      router.push('/api/auth/signin?callbackUrl=/admin/submissions')
+    }
+  }, [authStatus, router])
+
+  // Show loading while checking auth
+  if (authStatus === 'loading' || isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <p className="text-gray-600">Loading...</p>
+      </div>
+    )
+  }
+
+  // Check if user is admin
+  if (!session || session.user.role !== 'ADMIN') {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-gray-900">Access Denied</h1>
+          <p className="mt-2 text-gray-600">Admin access required.</p>
+        </div>
+      </div>
+    )
+  }
 
   useEffect(() => {
     fetchSubmissions()

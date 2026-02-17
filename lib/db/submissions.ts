@@ -77,16 +77,24 @@ export async function approveSubmission(submissionId: string) {
   }
 
   // Create slug from name
-  const slug = submission.name
+  let slug = submission.name
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '')
+
+  // Check if slug exists and add counter if needed (deduplication)
+  let counter = 1
+  let uniqueSlug = slug
+  while (await prisma.tool.findUnique({ where: { slug: uniqueSlug } })) {
+    uniqueSlug = `${slug}-${counter}`
+    counter++
+  }
 
   // Create the tool
   const tool = await prisma.tool.create({
     data: {
       name: submission.name,
-      slug,
+      slug: uniqueSlug,
       description: submission.description,
       longDescription: submission.longDescription,
       websiteUrl: submission.websiteUrl,
@@ -100,7 +108,7 @@ export async function approveSubmission(submissionId: string) {
         })),
       },
       tags: {
-        create: submission.tagIds.map((id) => ({
+        create: (submission.tagIds || []).map((id) => ({
           tag: { connect: { id } },
         })),
       },

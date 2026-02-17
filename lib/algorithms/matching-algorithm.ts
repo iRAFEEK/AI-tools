@@ -218,7 +218,7 @@ export function getTopMatches(
 ): MatchResult[] {
   const results = tools
     .map((tool) => calculateMatchScore(tool, input))
-    .filter((result) => result.score > 30) // Only show tools with >30% match
+    .filter((result) => result.score > 15) // Only show tools with >30% match
     .sort((a, b) => b.score - a.score)
     .slice(0, topN)
 

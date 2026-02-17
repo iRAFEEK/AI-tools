@@ -10,7 +10,7 @@ interface ToolCardProps {
 }
 
 export function ToolCard({ tool }: ToolCardProps) {
-  const { isFavorited, isLoading, toggleFavorite } = useFavorites(false)
+  const { isFavorited, isLoading, toggleFavorite } = useFavorites(tool.id)
   // Format pricing type for display
   const formatPricing = (type: string) => {
     return type
@@ -54,7 +54,7 @@ export function ToolCard({ tool }: ToolCardProps) {
           <button
             onClick={(e) => {
               e.preventDefault()
-              toggleFavorite(tool.id)
+              toggleFavorite()
             }}
             disabled={isLoading}
             className={`transition-colors ${

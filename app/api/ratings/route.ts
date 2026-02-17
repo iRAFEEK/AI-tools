@@ -19,24 +19,24 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { toolId, value } = body
+    const { toolId, score } = body
 
     // Validate input
-    if (!toolId || !value) {
+    if (!toolId || !score) {
       return NextResponse.json(
-        { success: false, error: 'toolId and value are required' },
+        { success: false, error: 'toolId and score are required' },
         { status: 400 }
       )
     }
 
-    if (value < 1 || value > 5) {
+    if (score < 1 || score > 5) {
       return NextResponse.json(
-        { success: false, error: 'Rating value must be between 1 and 5' },
+        { success: false, error: 'Rating score must be between 1 and 5' },
         { status: 400 }
       )
     }
 
-    const result = await upsertRating(session.user.id, toolId, value)
+    const result = await upsertRating(session.user.id, toolId, score)
 
     return NextResponse.json({
       success: true,

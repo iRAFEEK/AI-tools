@@ -1,10 +1,26 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 
-export function useFavorites(initialFavorited: boolean = false) {
-  const [isFavorited, setIsFavorited] = useState(initialFavorited)
-  const [isLoading, setIsLoading] = useState(false)
+export function useFavorites(toolId: string) {
+  const [isFavorited, setIsFavorited] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
-  const toggleFavorite = useCallback(async (toolId: string) => {
+  // Load initial favorite state
+  useEffect(() => {
+    async function checkFavorite() {
+      try {
+        const res = await fetch(`/api/favorites/check?toolId=${toolId}`)
+        const data = await res.json()
+        setIsFavorited(data.isFavorited)
+      } catch (error) {
+        console.error('Error checking favorite:', error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    checkFavorite()
+  }, [toolId])
+
+  const toggleFavorite = useCallback(async () => {
     setIsLoading(true)
 
     try {
@@ -38,7 +54,7 @@ export function useFavorites(initialFavorited: boolean = false) {
     } finally {
       setIsLoading(false)
     }
-  }, [isFavorited])
+  }, [isFavorited, toolId])
 
   return {
     isFavorited,
