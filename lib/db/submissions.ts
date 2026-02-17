@@ -17,13 +17,19 @@ export async function createSubmission(data: {
   pricingDetails?: string
   hasFreeTier?: boolean
 }) {
-  const { categoryIds, tagIds, ...submissionData } = data
-
   return prisma.toolSubmission.create({
     data: {
-      ...submissionData,
-      categoryIds,
-      tagIds: tagIds || [],
+      userId: data.userId,
+      name: data.name,
+      description: data.description,
+      longDescription: data.longDescription,
+      websiteUrl: data.websiteUrl,
+      logoUrl: data.logoUrl,
+      pricingType: data.pricingType,
+      pricingDetails: data.pricingDetails,
+      hasFreeTier: data.hasFreeTier ?? false,
+      categoryIds: data.categoryIds,
+      tagIds: data.tagIds ?? [],
       status: 'PENDING',
     },
   })
