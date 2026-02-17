@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getAllTools, createTool } from '@/lib/db/tools'
+import { getAllTools, getToolBySlug, createTool } from '@/lib/db/tools'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { toolSchema } from '@/lib/utils/validation'
@@ -7,13 +7,33 @@ import { slugify } from '@/lib/utils/slugify'
 
 /**
  * GET /api/tools
- * Get all tools with optional filtering
+ * Get all tools with optional filtering, or a single tool by slug
  */
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
+    const slug = searchParams.get('slug')
 
-    // Extract query parameters
+    // If slug is provided, return single tool
+    if (slug) {
+      const tool = await getToolBySlug(slug)
+
+      if (!tool) {
+        return NextResponse.json(
+          { success: false, error: 'Tool not found' },
+          { status: 404 }
+        )
+      }
+
+      return NextResponse.json({
+        success: true,
+        data: {
+          tools: [tool], // Wrap in array for compatibility with existing code
+        },
+      })
+    }
+
+    // Otherwise, get all tools with filters
     const filters = {
       category: searchParams.get('category')?.split(','),
       tags: searchParams.get('tags')?.split(','),
@@ -28,7 +48,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      ...result,
+      data: result,
     })
   } catch (error) {
     console.error('Error fetching tools:', error)
