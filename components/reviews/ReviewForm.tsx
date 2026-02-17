@@ -6,9 +6,10 @@ import { RatingInput } from './RatingInput'
 interface ReviewFormProps {
   toolId: string
   onSuccess?: () => void
+  onClose?: () => void
 }
 
-export function ReviewForm({ toolId, onSuccess }: ReviewFormProps) {
+export function ReviewForm({ toolId, onSuccess, onClose }: ReviewFormProps) {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [pros, setPros] = useState('')
@@ -75,9 +76,27 @@ export function ReviewForm({ toolId, onSuccess }: ReviewFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      {/* Rating */}
-      <div>
+    <div>
+      {/* Header with Close Button */}
+      {onClose && (
+        <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-200">
+          <h2 className="text-xl font-bold text-gray-900">Write a Review</h2>
+          <button
+            type="button"
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-600 transition-colors"
+            aria-label="Close"
+          >
+            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Rating */}
+        <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
           Your Rating
         </label>
@@ -175,5 +194,6 @@ export function ReviewForm({ toolId, onSuccess }: ReviewFormProps) {
         {isSubmitting ? 'Submitting...' : 'Submit Review'}
       </button>
     </form>
+    </div>
   )
 }
