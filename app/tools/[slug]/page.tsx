@@ -30,7 +30,7 @@ export default function ToolDetailPage() {
       try {
         const res = await fetch(`/api/tools?slug=${slug}`)
         const data = await res.json()
-        if (data.success && data.data.tools.length > 0) {
+        if (data.success && data.data?.tools?.length > 0) {
           setTool(data.data.tools[0])
         }
       } catch (error) {
@@ -58,7 +58,7 @@ export default function ToolDetailPage() {
         // Refresh tool data to get updated average rating
         const toolRes = await fetch(`/api/tools?slug=${slug}`)
         const toolData = await toolRes.json()
-        if (toolData.success && toolData.data.tools.length > 0) {
+        if (toolData.success && toolData.data?.tools?.length > 0) {
           setTool(toolData.data.tools[0])
         }
       }
