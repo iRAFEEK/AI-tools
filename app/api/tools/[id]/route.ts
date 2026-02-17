@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getToolById, updateTool, deleteTool } from '@/lib/db/tools'
-import { getServerSession } from 'next-auth'
+import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 
 /**
@@ -9,10 +9,11 @@ import { authOptions } from '@/lib/auth'
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
-    const tool = await getToolById(params.id)
+    const { id } = await context.params
+    const tool = await getToolById(id)
 
     if (!tool) {
       return NextResponse.json(
@@ -40,9 +41,11 @@ export async function GET(
  */
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await context.params
+
     // Check authentication
     const session = await getServerSession(authOptions)
     if (!session || session.user.role !== 'ADMIN') {
@@ -55,7 +58,7 @@ export async function PATCH(
     const body = await request.json()
 
     // Update tool
-    const tool = await updateTool(params.id, body)
+    const tool = await updateTool(id, body)
 
     return NextResponse.json({
       success: true,
@@ -77,9 +80,11 @@ export async function PATCH(
  */
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await context.params
+
     // Check authentication
     const session = await getServerSession(authOptions)
     if (!session || session.user.role !== 'ADMIN') {
@@ -89,7 +94,7 @@ export async function DELETE(
       )
     }
 
-    await deleteTool(params.id)
+    await deleteTool(id)
 
     return NextResponse.json({
       success: true,

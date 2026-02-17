@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getAllTools, createTool } from '@/lib/db/tools'
-import { getServerSession } from 'next-auth'
+import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/lib/auth'
 import { toolSchema } from '@/lib/utils/validation'
 import { slugify } from '@/lib/utils/slugify'
@@ -60,7 +60,7 @@ export async function POST(request: NextRequest) {
     const validation = toolSchema.safeParse(body)
     if (!validation.success) {
       return NextResponse.json(
-        { success: false, error: validation.error.errors },
+        { success: false, error: validation.error.format() },
         { status: 400 }
       )
     }

@@ -1,5 +1,5 @@
 import { prisma } from '@/lib/prisma'
-import { Prisma } from '@prisma/client'
+import { Prisma, PricingType } from '@prisma/client'
 import { ToolFilters } from '@/types'
 
 /**
@@ -165,7 +165,7 @@ export async function createTool(data: {
   longDescription?: string
   websiteUrl: string
   logoUrl?: string
-  pricingType: string
+  pricingType: PricingType
   pricingDetails?: string
   hasFreeTier?: boolean
   categoryIds: string[]
@@ -204,7 +204,7 @@ export async function updateTool(
     longDescription: string
     websiteUrl: string
     logoUrl: string
-    pricingType: string
+    pricingType: PricingType
     pricingDetails: string
     hasFreeTier: boolean
     isPublished: boolean

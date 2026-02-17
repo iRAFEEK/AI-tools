@@ -3,13 +3,14 @@ import { getToolBySlug } from '@/lib/db/tools'
 import { Star, ExternalLink, Heart } from 'lucide-react'
 
 interface ToolDetailPageProps {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
 
 export default async function ToolDetailPage({ params }: ToolDetailPageProps) {
-  const tool = await getToolBySlug(params.slug)
+  const { slug } = await params
+  const tool = await getToolBySlug(slug)
 
   if (!tool) {
     notFound()

@@ -1,51 +1,14 @@
-import { withAuth } from 'next-auth/middleware'
+// Simplified middleware - auth protection will be added later
+// For now, just export a simple pass-through middleware
+
 import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
 
-// Middleware to protect routes
-export default withAuth(
-  function middleware(req) {
-    const token = req.nextauth.token
-    const isAdmin = token?.role === 'ADMIN'
-    const isAdminRoute = req.nextUrl.pathname.startsWith('/admin')
-
-    // Block non-admin users from accessing /admin routes
-    if (isAdminRoute && !isAdmin) {
-      return NextResponse.redirect(new URL('/', req.url))
-    }
-
-    return NextResponse.next()
-  },
-  {
-    callbacks: {
-      // Decide if middleware should run
-      authorized: ({ token, req }) => {
-        const { pathname } = req.nextUrl
-
-        // Public routes that anyone can access
-        const publicRoutes = [
-          '/',
-          '/tools',
-          '/categories',
-          '/smart-match',
-          '/about',
-          '/login',
-          '/register',
-        ]
-
-        // Check if current path starts with any public route
-        const isPublicRoute = publicRoutes.some(route =>
-          pathname.startsWith(route)
-        )
-
-        // Allow public routes without authentication
-        if (isPublicRoute) return true
-
-        // All other routes require authentication
-        return !!token
-      },
-    },
-  }
-)
+export function middleware(request: NextRequest) {
+  // For now, allow all requests
+  // We'll add authentication protection after we set up login pages
+  return NextResponse.next()
+}
 
 // Configure which routes middleware applies to
 export const config = {
