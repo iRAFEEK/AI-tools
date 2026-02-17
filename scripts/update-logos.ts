@@ -16,14 +16,14 @@ async function updateLogos() {
   await prisma.tool.update({
     where: { slug: 'grammarly' },
     data: {
-      logoUrl: 'https://static.grammarly.com/assets/files/efe463ba3e5ccf96c963a2589cc7797f/apple-touch-icon-180x180.png',
+      logoUrl: 'https://avatars.githubusercontent.com/u/22717754?s=200&v=4',
     },
   })
 
   await prisma.tool.update({
     where: { slug: 'midjourney' },
     data: {
-      logoUrl: 'https://styles.redditmedia.com/t5_wu0if/styles/communityIcon_2g14kv64jkz81.png',
+      logoUrl: 'https://seeklogo.com/images/M/midjourney-logo-3BAF817F3F-seeklogo.com.png',
     },
   })
 
@@ -44,7 +44,7 @@ async function updateLogos() {
   await prisma.tool.update({
     where: { slug: 'stable-diffusion' },
     data: {
-      logoUrl: 'https://aeiljuispo.cloudimg.io/v7/https://s3.amazonaws.com/static.mlh.io/brand-assets/partners/stability-ai/logo.png',
+      logoUrl: 'https://avatars.githubusercontent.com/u/99127326?s=200&v=4',
     },
   })
 
