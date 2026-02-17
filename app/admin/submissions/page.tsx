@@ -23,7 +23,9 @@ interface Submission {
 
 export default function AdminSubmissionsPage() {
   const router = useRouter()
-  const { data: session, status: authStatus } = useSession()
+  const sessionResult = useSession()
+  const session = sessionResult?.data
+  const authStatus = sessionResult?.status || 'loading'
   const [submissions, setSubmissions] = useState<Submission[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [statusFilter, setStatusFilter] = useState<'PENDING' | 'APPROVED' | 'REJECTED' | 'ALL'>('PENDING')
