@@ -48,7 +48,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      data: result,
+      ...result, // Spread to maintain original format: { success, tools, pagination }
     })
   } catch (error) {
     console.error('Error fetching tools:', error)
