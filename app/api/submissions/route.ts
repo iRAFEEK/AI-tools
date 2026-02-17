@@ -7,6 +7,8 @@ import {
 } from '@/lib/db/submissions'
 import { PricingType } from '@prisma/client'
 
+// Tool submissions API routes
+
 /**
  * GET /api/submissions
  * Get all submissions (admin: all, user: own)
