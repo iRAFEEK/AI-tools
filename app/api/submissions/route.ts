@@ -22,7 +22,7 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    let submissions
+    let submissions: any[]
 
     // Admin sees all submissions, users see only their own
     if (session.user.role === 'ADMIN') {
