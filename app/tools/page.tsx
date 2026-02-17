@@ -1,6 +1,9 @@
 import { getAllTools } from '@/lib/db/tools'
 import { ToolCard } from '@/components/tools/ToolCard'
 
+// Force dynamic rendering (don't pre-render at build time)
+export const dynamic = 'force-dynamic'
+
 export default async function ToolsPage() {
   // Fetch tools from database
   const { tools, pagination } = await getAllTools({
