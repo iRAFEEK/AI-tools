@@ -20,9 +20,8 @@ export default function ToolDetailPage() {
   const [showReviewForm, setShowReviewForm] = useState(false)
   const [refreshReviews, setRefreshReviews] = useState(0)
 
-  const { isFavorited, isLoading: favLoading, toggleFavorite } = tool
-    ? useFavorites(tool.id)
-    : { isFavorited: false, isLoading: true, toggleFavorite: () => {} }
+  // Always call hook unconditionally (Rules of Hooks)
+  const { isFavorited, isLoading: favLoading, toggleFavorite } = useFavorites(tool?.id || '')
 
   // Fetch tool data
   useEffect(() => {

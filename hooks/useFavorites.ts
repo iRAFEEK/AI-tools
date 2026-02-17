@@ -6,6 +6,12 @@ export function useFavorites(toolId: string) {
 
   // Load initial favorite state
   useEffect(() => {
+    // Skip if no toolId provided
+    if (!toolId) {
+      setIsLoading(false)
+      return
+    }
+
     async function checkFavorite() {
       try {
         const res = await fetch(`/api/favorites/check?toolId=${toolId}`)
