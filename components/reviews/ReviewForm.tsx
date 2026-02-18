@@ -118,7 +118,7 @@ export function ReviewForm({ toolId, onSuccess, onClose }: ReviewFormProps) {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           required
-          className="w-full rounded-md border border-gray-300 px-4 py-2 focus:border-blue-500 focus:ring-blue-500"
+          className="w-full rounded-md border border-gray-300 px-4 py-2 text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:ring-blue-500"
           placeholder="Summarize your experience"
         />
       </div>
@@ -134,7 +134,7 @@ export function ReviewForm({ toolId, onSuccess, onClose }: ReviewFormProps) {
           onChange={(e) => setContent(e.target.value)}
           required
           rows={5}
-          className="w-full rounded-md border border-gray-300 px-4 py-2 focus:border-blue-500 focus:ring-blue-500"
+          className="w-full rounded-md border border-gray-300 px-4 py-2 text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:ring-blue-500"
           placeholder="Share your experience with this tool..."
         />
       </div>
@@ -149,7 +149,7 @@ export function ReviewForm({ toolId, onSuccess, onClose }: ReviewFormProps) {
           value={pros}
           onChange={(e) => setPros(e.target.value)}
           rows={3}
-          className="w-full rounded-md border border-gray-300 px-4 py-2 focus:border-blue-500 focus:ring-blue-500"
+          className="w-full rounded-md border border-gray-300 px-4 py-2 text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:ring-blue-500"
           placeholder="What did you like about this tool?"
         />
       </div>
@@ -164,7 +164,7 @@ export function ReviewForm({ toolId, onSuccess, onClose }: ReviewFormProps) {
           value={cons}
           onChange={(e) => setCons(e.target.value)}
           rows={3}
-          className="w-full rounded-md border border-gray-300 px-4 py-2 focus:border-blue-500 focus:ring-blue-500"
+          className="w-full rounded-md border border-gray-300 px-4 py-2 text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:ring-blue-500"
           placeholder="What could be improved?"
         />
       </div>
