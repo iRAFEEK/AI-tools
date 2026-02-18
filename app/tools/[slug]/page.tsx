@@ -233,7 +233,7 @@ export default function ToolDetailPage() {
         {/* Review Form Modal */}
         {showReviewForm && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-4">
-            <div className="bg-white rounded-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-8">
               <ReviewForm
                 toolId={tool.id}
                 onClose={() => setShowReviewForm(false)}
