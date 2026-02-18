@@ -27,6 +27,9 @@ export function useFavorites(toolId: string) {
   }, [toolId])
 
   const toggleFavorite = useCallback(async () => {
+    // Skip if no toolId
+    if (!toolId) return { success: false, error: 'No tool selected' }
+
     setIsLoading(true)
 
     try {
@@ -44,6 +47,11 @@ export function useFavorites(toolId: string) {
       const data = await response.json()
 
       if (!response.ok) {
+        // Handle unauthorized error
+        if (response.status === 401) {
+          alert('Please sign in to add favorites')
+          return { success: false, error: 'Unauthorized' }
+        }
         throw new Error(data.error || 'Failed to update favorite')
       }
 
@@ -53,6 +61,7 @@ export function useFavorites(toolId: string) {
       return { success: true }
     } catch (error) {
       console.error('Error toggling favorite:', error)
+      alert('Failed to update favorite. Please try again.')
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
